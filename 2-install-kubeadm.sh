@@ -1,5 +1,5 @@
 #!/bin/bash
-# sudo su
+# install in root - sudo su
 # install kubeadm, kubelet, kubectl
 echo 'install kubernetes'
 whoami
