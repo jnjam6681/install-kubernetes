@@ -1,7 +1,7 @@
 #!/bin/bash
 DOCKER_COMPOSE_VERSION="1.22.0"
-HELM_VERSION="v2.11.0-rc.2"
-# install docker case
+# install docker ce
+echo 'install docker-ce'
 sudo apt-get update
 sudo apt-get install \
   apt-transport-https \
@@ -15,12 +15,16 @@ sudo add-apt-repository \
   stable"
 sudo apt-get update
 sudo apt-get install docker-ce
+echo 'install finish !!'
 
 # install docker compose
+echo 'install docker-compose'
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+echo 'install finish !!'
 
 # install kubeadm, kubelet, kubectl
+echo 'install kubernetes'
 sudo su
 apt-get update && apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -30,10 +34,5 @@ EOF
 apt-get update
 apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
+echo 'install finish !!'
 exit
-
-# install helm
-wget https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
-tar -zxvf helm-${HELM_VERSION}-linux-amd64.tar.gz
-sudo mv linux-amd64/helm /usr/local/bin/helm
-rm -rf helm-${HELM_VERSION}-linux-amd64.tar.gz
