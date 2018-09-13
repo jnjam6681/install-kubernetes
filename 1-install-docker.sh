@@ -2,23 +2,35 @@
 DOCKER_COMPOSE_VERSION="1.22.0"
 # install docker ce
 echo 'install docker-ce'
-sudo apt-get update
-sudo apt-get install \
+apt-get update
+apt-get install \
   apt-transport-https \
   ca-certificates \
   curl \
   software-properties-common
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+add-apt-repository \
   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) \
   stable"
-sudo apt-get update
-sudo apt-get install docker-ce
+apt-get update
+apt-get install docker-ce
 echo 'install docker-ce finish !!'
 
 # install docker compose
 echo 'install docker-compose'
-sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 echo 'install docker-compose finish !!'
+
+echo 'install kubernetes'
+whoami
+apt-get update && apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+apt-get install -y kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl
+echo 'install kubernetes finish !!'
