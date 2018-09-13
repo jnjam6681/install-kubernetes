@@ -15,17 +15,18 @@ sudo add-apt-repository \
   stable"
 sudo apt-get update
 sudo apt-get install docker-ce
-echo 'install finish !!'
+echo 'install docker-ce finish !!'
 
 # install docker compose
 echo 'install docker-compose'
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-echo 'install finish !!'
+echo 'install docker-compose finish !!'
 
 # install kubeadm, kubelet, kubectl
 echo 'install kubernetes'
 sudo su
+whoami
 apt-get update && apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
@@ -34,5 +35,5 @@ EOF
 apt-get update
 apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
-echo 'install finish !!'
+echo 'install kubernetes finish !!'
 exit
