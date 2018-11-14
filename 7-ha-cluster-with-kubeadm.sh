@@ -122,33 +122,44 @@ kubeadm init --config kubeadm-config.yaml
 
 # copy certificates to other control plane nodes
 echo "copy certificates to ${K8SHA_HOST2}"
-scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/sa.key ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/etcd/
-scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/pki/etcd/
-scp /etc/kubernetes/admin.conf ${K8SHA_USER2}@${K8SHA_IP2}:/etc/kubernetes/admin.conf
+scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/sa.key ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER2}@${K8SHA_IP2}:
+scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:etcd-ca.crt
+scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:etcd-ca.key
+scp /etc/kubernetes/admin.conf ${K8SHA_USER2}@${K8SHA_IP2}:
 echo "copy success."
 
 echo "copy certificates to ${K8SHA_HOST3}"
-scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/sa.key ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/
-scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/etcd/
-scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/pki/etcd/
-scp /etc/kubernetes/admin.conf ${K8SHA_USER3}@${K8SHA_IP3}:/etc/kubernetes/admin.conf
+scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/sa.key ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER3}@${K8SHA_IP3}:
+scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:etcd-ca.crt
+scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:etcd-ca.key
+scp /etc/kubernetes/admin.conf ${K8SHA_USER3}@${K8SHA_IP3}:
 echo "copy success."
 echo "-----------------------------------------------------"
 
 echo "create deploy file"
 cat << EOF > ~/config/${K8SHA_HOST2}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
+
+mkdir -p /etc/kubernetes/pki/etcd
+mv /home/${K8SHA_USER2}/ca.crt /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/ca.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/sa.pub /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/sa.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/front-proxy-ca.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER2}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv /home/${K8SHA_USER2}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv /home/${K8SHA_USER2}/admin.conf /etc/kubernetes/admin.conf
 
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
@@ -171,6 +182,17 @@ echo "create deploy file"
 cat << EOF > ~/config/${K8SHA_HOST3}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
 
+mkdir -p /etc/kubernetes/pki/etcd
+mv /home/${K8SHA_USER3}/ca.crt /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/ca.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/sa.pub /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/sa.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/front-proxy-ca.key /etc/kubernetes/pki/
+mv /home/${K8SHA_USER3}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv /home/${K8SHA_USER3}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv /home/${K8SHA_USER3}/admin.conf /etc/kubernetes/admin.conf
+
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
 kubeadm alpha phase kubelet write-env-file --config kubeadm-config.yaml
@@ -190,8 +212,8 @@ echo "-----------------------------------------------------"
 
 # copy folder config to other control plane nodes
 echo "copy folder config"
-scp ~/config/${K8SHA_HOST2}/ ${K8SHA_USER2}@${K8SHA_IP2}:~/
-scp ~/config/${K8SHA_HOST3}/ ${K8SHA_USER3}@${K8SHA_IP3}:~/
+scp -r ~/config/${K8SHA_HOST2}/ ${K8SHA_USER2}@${K8SHA_IP2}:
+scp -r ~/config/${K8SHA_HOST3}/ ${K8SHA_USER3}@${K8SHA_IP3}:
 echo "copy folder success."
 echo "-----------------------------------------------------"
 echo "finish!!"
