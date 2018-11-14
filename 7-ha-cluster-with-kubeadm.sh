@@ -117,6 +117,7 @@ EOF
 echo "create kubeadm-config.yaml for ${K8SHA_HOST3} success."
 echo "-----------------------------------------------------"
 echo "run kubeadm-config.yaml"
+cd ~/config/${K8SHA_HOST1}/
 kubeadm init --config kubeadm-config.yaml
 
 # copy certificates to other control plane nodes
