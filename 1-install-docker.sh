@@ -15,6 +15,7 @@ add-apt-repository \
   stable"
 apt-get update
 apt-get install -y docker-ce
+# apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu
 echo 'install docker-ce finish !!'
 
 # install docker compose
