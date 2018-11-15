@@ -165,15 +165,15 @@ cat << EOF > ~/config/${K8SHA_HOST2}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
 
 mkdir -p /etc/kubernetes/pki/etcd
-mv ~/config/${K8SHA_HOST2}/ca.crt /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/ca.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/sa.pub /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/sa.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/front-proxy-ca.crt /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/front-proxy-ca.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST2}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
-mv ~/config/${K8SHA_HOST2}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
-mv ~/config/${K8SHA_HOST2}/admin.conf /etc/kubernetes/admin.conf
+mv ~/${K8SHA_HOST2}/ca.crt /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/ca.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/sa.pub /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/sa.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/front-proxy-ca.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST2}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv ~/${K8SHA_HOST2}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv ~/${K8SHA_HOST2}/admin.conf /etc/kubernetes/admin.conf
 
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
@@ -189,6 +189,7 @@ kubeadm alpha phase controlplane all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config annotate-cri --config kubeadm-config.yaml
 kubeadm alpha phase mark-master --config kubeadm-config.yaml
 EOF
+chmod -R 777 ~/config/${K8SHA_HOST2}/1-kubeadm-phase.sh
 echo "create success."
 echo "-----------------------------------------------------"
 
@@ -197,15 +198,15 @@ cat << EOF > ~/config/${K8SHA_HOST3}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
 
 mkdir -p /etc/kubernetes/pki/etcd
-mv ~/config/${K8SHA_HOST3}/ca.crt /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/ca.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/sa.pub /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/sa.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/front-proxy-ca.crt /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/front-proxy-ca.key /etc/kubernetes/pki/
-mv ~/config/${K8SHA_HOST3}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
-mv ~/config/${K8SHA_HOST3}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
-mv ~/config/${K8SHA_HOST3}/admin.conf /etc/kubernetes/admin.conf
+mv ~/${K8SHA_HOST3}/ca.crt /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/ca.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/sa.pub /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/sa.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/front-proxy-ca.key /etc/kubernetes/pki/
+mv ~/${K8SHA_HOST3}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv ~/${K8SHA_HOST3}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv ~/${K8SHA_HOST3}/admin.conf /etc/kubernetes/admin.conf
 
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
@@ -221,6 +222,7 @@ kubeadm alpha phase controlplane all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config annotate-cri --config kubeadm-config.yaml
 kubeadm alpha phase mark-master --config kubeadm-config.yaml
 EOF
+chmod 777 -R ~/config/${K8SHA_HOST3}/1-kubeadm-phase.sh
 echo "create success."
 echo "-----------------------------------------------------"
 
