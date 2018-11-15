@@ -1,6 +1,11 @@
 #!/bin/bash
 
-# install HA for 3 master
+###############################################################################
+#                                                                             #
+#  + install HA for 3 master                                                  #
+#  + scp from root to root, please check your scp before run script.          #
+#                                                                             #
+###############################################################################
 
 # set hostname
 K8SHA_HOST1="k8s-master-1"
@@ -39,8 +44,8 @@ apiVersion: kubeadm.k8s.io/v1alpha3
 kind: ClusterConfiguration
 kubernetesVersion: stable
 apiServerCertSANs:
-- "${K8SHA_IPLB}"
-controlPlaneEndpoint: "${K8SHA_IPLB}:${K8SHA_LB_PORT}"
+- "${K8SHA_LB_IP}"
+controlPlaneEndpoint: "${K8SHA_LB_IP}:${K8SHA_LB_PORT}"
 etcd:
   local:
     extraArgs:
@@ -121,28 +126,28 @@ cd ~/config/${K8SHA_HOST1}/
 kubeadm init --config kubeadm-config.yaml
 
 # copy certificates to other control plane nodes
-echo "copy certificates to ${K8SHA_HOST2}"
-scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/sa.key ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER2}@${K8SHA_IP2}:
-scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER2}@${K8SHA_IP2}:etcd-ca.crt
-scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER2}@${K8SHA_IP2}:etcd-ca.key
-scp /etc/kubernetes/admin.conf ${K8SHA_USER2}@${K8SHA_IP2}:
+echo "copy certificates to ~/config/${K8SHA_HOST2}/"
+cp /etc/kubernetes/pki/ca.crt ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/ca.key ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/sa.key ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/sa.pub ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/front-proxy-ca.crt ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/front-proxy-ca.key ~/config/${K8SHA_HOST2}/
+cp /etc/kubernetes/pki/etcd/ca.crt ~/config/${K8SHA_HOST2}/etcd-ca.crt
+cp /etc/kubernetes/pki/etcd/ca.key ~/config/${K8SHA_HOST2}/etcd-ca.key
+cp /etc/kubernetes/admin.conf ~/config/${K8SHA_HOST2}/
 echo "copy success."
 
-echo "copy certificates to ${K8SHA_HOST3}"
-scp /etc/kubernetes/pki/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/sa.key ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/sa.pub ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/front-proxy-ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/front-proxy-ca.key ${K8SHA_USER3}@${K8SHA_IP3}:
-scp /etc/kubernetes/pki/etcd/ca.crt ${K8SHA_USER3}@${K8SHA_IP3}:etcd-ca.crt
-scp /etc/kubernetes/pki/etcd/ca.key ${K8SHA_USER3}@${K8SHA_IP3}:etcd-ca.key
-scp /etc/kubernetes/admin.conf ${K8SHA_USER3}@${K8SHA_IP3}:
+echo "copy certificates to ~/config/${K8SHA_HOST3}/"
+cp /etc/kubernetes/pki/ca.crt ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/ca.key ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/sa.key ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/sa.pub ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/front-proxy-ca.crt ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/front-proxy-ca.key ~/config/${K8SHA_HOST3}/
+cp /etc/kubernetes/pki/etcd/ca.crt ~/config/${K8SHA_HOST3}/etcd-ca.crt
+cp /etc/kubernetes/pki/etcd/ca.key ~/config/${K8SHA_HOST3}/etcd-ca.key
+cp /etc/kubernetes/admin.conf ~/config/${K8SHA_HOST3}/
 echo "copy success."
 echo "-----------------------------------------------------"
 
@@ -151,15 +156,15 @@ cat << EOF > ~/config/${K8SHA_HOST2}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
 
 mkdir -p /etc/kubernetes/pki/etcd
-mv /home/${K8SHA_USER2}/ca.crt /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/ca.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/sa.pub /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/sa.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/front-proxy-ca.crt /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/front-proxy-ca.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER2}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
-mv /home/${K8SHA_USER2}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
-mv /home/${K8SHA_USER2}/admin.conf /etc/kubernetes/admin.conf
+mv ~/config/${K8SHA_HOST2}/ca.crt /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/ca.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/sa.pub /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/sa.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/front-proxy-ca.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST2}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv ~/config/${K8SHA_HOST2}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv ~/config/${K8SHA_HOST2}/admin.conf /etc/kubernetes/admin.conf
 
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
@@ -183,15 +188,15 @@ cat << EOF > ~/config/${K8SHA_HOST3}/1-kubeadm-phase.sh
 K8SHA_CONFIG="/etc/kubernetes/admin.conf"
 
 mkdir -p /etc/kubernetes/pki/etcd
-mv /home/${K8SHA_USER3}/ca.crt /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/ca.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/sa.pub /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/sa.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/front-proxy-ca.crt /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/front-proxy-ca.key /etc/kubernetes/pki/
-mv /home/${K8SHA_USER3}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
-mv /home/${K8SHA_USER3}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
-mv /home/${K8SHA_USER3}/admin.conf /etc/kubernetes/admin.conf
+mv ~/config/${K8SHA_HOST3}/ca.crt /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/ca.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/sa.pub /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/sa.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/front-proxy-ca.crt /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/front-proxy-ca.key /etc/kubernetes/pki/
+mv ~/config/${K8SHA_HOST3}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv ~/config/${K8SHA_HOST3}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv ~/config/${K8SHA_HOST3}/admin.conf /etc/kubernetes/admin.conf
 
 kubeadm alpha phase certs all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
