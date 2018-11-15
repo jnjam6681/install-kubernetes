@@ -125,6 +125,15 @@ echo "run kubeadm-config.yaml"
 cd ~/config/${K8SHA_HOST1}/
 kubeadm init --config kubeadm-config.yaml
 
+echo "start cluster"
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/canal/rbac.yaml
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/canal/canal.yaml
+echo "start cluster success."
+
 # copy certificates to other control plane nodes
 echo "copy certificates to ~/config/${K8SHA_HOST2}/"
 cp /etc/kubernetes/pki/ca.crt ~/config/${K8SHA_HOST2}/
