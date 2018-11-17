@@ -1,7 +1,7 @@
 # install-kubernetes-kubeadm
 install kubernetes, docker, docker-compose, helm
 
-# 7-ha
+# 7-ha-cluster-with-kubeadm.sh
 After setup master 2 and 3 success. 
 please run command on master 2 and 3
    ```
