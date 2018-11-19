@@ -10,7 +10,7 @@
 #                                                                             #
 #  + After setup master 2 and 3 success.                                      #
 #  + please run command on master 2 and 3                                     #
-# mkdir -p $HOME/.kube                                    
+# mkdir -p $HOME/.kube
 # sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 # sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
@@ -43,6 +43,11 @@ K8SHA_CIDR="10.244.0.0/16"
 mkdir -p ~/config/${K8SHA_HOST1}/
 mkdir -p ~/config/${K8SHA_HOST2}/
 mkdir -p ~/config/${K8SHA_HOST3}/
+
+# copy start-cluster.sh
+cp ./start-cluster.sh ~/config/${K8SHA_HOST1}/
+cp ./start-cluster.sh ~/config/${K8SHA_HOST2}/
+cp ./start-cluster.sh ~/config/${K8SHA_HOST3}/
 
 # create all kubeadm-config.yaml
 echo "create all kubeadm-config.yaml"
@@ -134,10 +139,7 @@ cd ~/config/${K8SHA_HOST1}/
 kubeadm init --config kubeadm-config.yaml
 
 echo "start cluster"
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
+./start-cluster.sh
 kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/canal/rbac.yaml
 kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/canal/canal.yaml
 echo "start cluster success."
@@ -196,6 +198,8 @@ kubeadm alpha phase kubeconfig all --config kubeadm-config.yaml
 kubeadm alpha phase controlplane all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config annotate-cri --config kubeadm-config.yaml
 kubeadm alpha phase mark-master --config kubeadm-config.yaml
+
+./start-cluster.sh
 EOF
 chmod -R 777 ~/config/${K8SHA_HOST2}/1-kubeadm-phase.sh
 echo "create success."
@@ -229,6 +233,8 @@ kubeadm alpha phase kubeconfig all --config kubeadm-config.yaml
 kubeadm alpha phase controlplane all --config kubeadm-config.yaml
 kubeadm alpha phase kubelet config annotate-cri --config kubeadm-config.yaml
 kubeadm alpha phase mark-master --config kubeadm-config.yaml
+
+./start-cluster.sh
 EOF
 chmod 777 -R ~/config/${K8SHA_HOST3}/1-kubeadm-phase.sh
 echo "create success."
