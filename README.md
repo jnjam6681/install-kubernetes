@@ -12,3 +12,8 @@ install kubernetes, docker, docker-compose, helm
   ssh-keygen -t rsa -P ''
   ssh-copy-id user@ip_addres
   ```
+# Run script with SSH
+  ```
+  ssh user@$ip_address "bash -s" < ./1-install-docker.sh
+  ```
+ 
