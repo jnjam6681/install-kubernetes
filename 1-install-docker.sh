@@ -1,5 +1,13 @@
 #!/bin/bash
 DOCKER_COMPOSE_VERSION="1.22.0"
+
+###############################################################################
+#                                                                             #
+#  + install on other node with ssh.                                          #
+# ssh user@$IPaddress "bash -s" < ./1-install-docker.sh
+#
+###############################################################################
+
 # install docker ce
 echo 'install docker-ce'
 apt-get update

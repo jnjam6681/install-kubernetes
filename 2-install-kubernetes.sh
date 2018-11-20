@@ -1,5 +1,12 @@
 #!/bin/bash
 
+###############################################################################
+#                                                                             #
+#  + install on other node with ssh.                                          #
+# ssh user@$IPaddress "bash -s" < ./2-install-kubernetes.sh
+#
+###############################################################################
+
 echo 'install kubernetes'
 whoami
 apt-get update && apt-get install -y apt-transport-https curl
