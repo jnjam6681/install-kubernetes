@@ -246,6 +246,7 @@ echo "-----------------------------------------------------"
 echo "copy folder config"
 scp -r ~/config/${K8SHA_HOST2}/ ${K8SHA_USER2}@${K8SHA_IP2}:
 scp -r ~/config/${K8SHA_HOST3}/ ${K8SHA_USER3}@${K8SHA_IP3}:
-echo "copy folder success."
+echo "copy folder to /home/${K8SHA_USER2} success."
+echo "copy folder to /home/${K8SHA_USER3} success."
 echo "-----------------------------------------------------"
 echo "finish!!"
