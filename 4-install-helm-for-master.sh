@@ -1,5 +1,5 @@
 #!/bin/bash
-HELM_VERSION="v2.12.2"
+HELM_VERSION="v2.14.2"
 # install helm
 echo 'install helm'
 wget https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
