@@ -9,3 +9,5 @@ tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 mv /tmp/etcd-${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/etcdctl
 rm -rf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 rm -rf /tmp/etcd-${ETCD_VER}-linux-amd64
+
+echo 'install etcdctl finish !!'
